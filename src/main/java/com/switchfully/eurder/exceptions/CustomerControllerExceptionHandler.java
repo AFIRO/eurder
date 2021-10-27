@@ -20,4 +20,10 @@ public class CustomerControllerExceptionHandler extends ResponseEntityExceptionH
         response.sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
     }
 
+    @ExceptionHandler(AuthorisationException.class)
+    protected void authorisationException(AuthorisationException exception, HttpServletResponse response) throws Exception{
+        logger.error(exception.getMessage());
+        response.sendError(HttpStatus.FORBIDDEN.value(), exception.getMessage());
+    }
+
 }

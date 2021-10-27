@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/Customer")
 public class CustomerController {
@@ -20,11 +22,33 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public userDTO createUser(@RequestBody createUserDTO dto){
         logger.info("New user creation called");
         return customerService.saveNewUser(dto);
 
+    }
+
+    @PostMapping(produces = "application/json", consumes = "application/json", params = "authorisationId")
+    @ResponseStatus(HttpStatus.CREATED)
+    public userDTO createAdmin(@RequestParam(value = "authorisationId", required = false) String authorisationId, @RequestBody createUserDTO dto){
+        logger.info("New admin creation called by admin " + authorisationId);
+        return customerService.saveNewAdmin(authorisationId, dto);
+
+    }
+
+    @GetMapping(produces = "application/json", params = "authorisationId")
+    @ResponseStatus(HttpStatus.OK)
+    public List<userDTO> getAllUsersAsAdmin(@RequestParam("authorisationId") String authorisationId){
+        logger.info("Get all users called by admin " + authorisationId);
+        return customerService.getAllUsers(authorisationId);
+    }
+
+    @GetMapping(produces = "application/json", params = {"authorisationId", "customerId"})
+    @ResponseStatus(HttpStatus.OK)
+    public userDTO getSpecificUser(@RequestParam("authorisationId") String authorisationId,@RequestParam (value = "customerId", required = false) String customerId ){
+        logger.info("Get specific users called by admin " + authorisationId + "for user " + customerId);
+        return customerService.getSpecificUser(authorisationId, customerId);
     }
 }

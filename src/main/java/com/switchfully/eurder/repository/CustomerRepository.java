@@ -21,4 +21,12 @@ public class CustomerRepository {
     public void saveUser(User user) {
         savedUsersById.put(user.getId(), user);
     }
+
+    public Map<String, User> getSavedUsersById() {
+        return savedUsersById;
+    }
+
+    public User getSpecificUser(String customerId) {
+        return savedUsersById.get(customerId);
+    }
 }

@@ -5,7 +5,7 @@ public class userDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private String adress;
+    private String address;
     private String phoneNumber;
 
     public userDTO setId(String id) {
@@ -28,8 +28,8 @@ public class userDTO {
         return this;
     }
 
-    public userDTO setAdress(String adress) {
-        this.adress = adress;
+    public userDTO setAddress(String address) {
+        this.address = address;
         return this;
     }
 
@@ -54,8 +54,8 @@ public class userDTO {
         return email;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
     public String getPhoneNumber() {

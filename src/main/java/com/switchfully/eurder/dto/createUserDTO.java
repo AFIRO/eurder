@@ -1,11 +1,14 @@
 package com.switchfully.eurder.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class createUserDTO {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String adress;
-    private String phoneNumber;
+    private   String firstName;
+    private  String lastName;
+    private  String email;
+    private  String address;
+    private  String phoneNumber;
 
 
     public createUserDTO setFirstName(String firstName) {
@@ -23,8 +26,8 @@ public class createUserDTO {
         return this;
     }
 
-    public createUserDTO setAdress(String adress) {
-        this.adress = adress;
+    public createUserDTO setAddress(String address) {
+        this.address = address;
         return this;
     }
 
@@ -45,8 +48,8 @@ public class createUserDTO {
         return email;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
     public String getPhoneNumber() {
