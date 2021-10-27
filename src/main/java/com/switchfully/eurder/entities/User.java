@@ -1,25 +1,16 @@
 package com.switchfully.eurder.entities;
 
 
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import java.util.UUID;
 
 
 public class User {
     private final String id;
-    @NotBlank(message = "First name must be filled in")
-    private  final String firstName;
-    @NotBlank(message = "Last name must be filled in")
+    private final String firstName;
     private final String lastName;
-    @NotBlank(message = "Email must be filled in")
-    @Email(message = "Email is not valid")
-    private final String email;
-    @NotBlank(message = "Address must be filled in")
-    private final String address;
-    @NotBlank(message = "Phone number must be filled in")
-    private final String phoneNumber;
+    private String email;
+    private String address;
+    private String phoneNumber;
     private boolean isAdmin;
 
 
@@ -62,6 +53,21 @@ public class User {
 
     public User setAdmin(boolean admin) {
         isAdmin = admin;
+        return this;
+    }
+
+    public User setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public User setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public User setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
         return this;
     }
 }

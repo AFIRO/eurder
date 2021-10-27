@@ -3,7 +3,6 @@ package com.switchfully.eurder.services;
 import com.switchfully.eurder.dto.createUserDTO;
 import com.switchfully.eurder.dto.userDTO;
 import com.switchfully.eurder.entities.User;
-import com.switchfully.eurder.exceptions.AuthorisationException;
 import com.switchfully.eurder.mappers.CustomerMapper;
 import com.switchfully.eurder.repository.CustomerRepository;
 import org.slf4j.Logger;
@@ -18,16 +17,18 @@ import java.util.stream.Collectors;
 public class CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
+    private final ValidationService validationService;
     private final Logger logger = LoggerFactory.getLogger(CustomerService.class);
 
     @Autowired
-    public CustomerService(CustomerMapper customerMapper, CustomerRepository customerRepository) {
+    public CustomerService(CustomerMapper customerMapper, CustomerRepository customerRepository, ValidationService validationService) {
         this.customerMapper = customerMapper;
         this.customerRepository = customerRepository;
+        this.validationService = validationService;
     }
 
     public userDTO saveNewUser(createUserDTO dto) {
-        if (isValidDTO(dto)) {
+        if (validationService.IsValidCreateUserDTO(dto)) {
             User newUser = customerMapper.toUser(dto);
             customerRepository.saveUser(newUser);
             logger.info("User with the following id has been created: " + newUser.getId());
@@ -37,8 +38,8 @@ public class CustomerService {
     }
 
     public userDTO saveNewAdmin(String authorisationId, createUserDTO dto) {
-        assertAdmin(authorisationId);
-        if (isValidDTO(dto)) {
+        validationService.assertAdmin(authorisationId);
+        if (validationService.IsValidCreateUserDTO(dto)) {
             User newUser = customerMapper.toUser(dto);
             newUser.setAdmin(true);
             customerRepository.saveUser(newUser);
@@ -51,38 +52,16 @@ public class CustomerService {
 
 
     public List<userDTO> getAllUsers(String id) {
-        assertAdmin(id);
-        return customerRepository.getSavedUsersById().values().stream()
+        validationService.assertAdmin(id);
+        return customerRepository.getAllUsers().values().stream()
                 .map(customerMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
 
     public userDTO getSpecificUser(String authorisationId, String customerId) {
-        assertAdmin(authorisationId);
+        validationService.assertAdmin(authorisationId);
         return customerMapper.toDTO(customerRepository.getSpecificUser(customerId));
-    }
-
-
-    public boolean isValidInput(String input) {
-        return !(input == null || input.isEmpty() || input.isBlank());
-    }
-
-    public boolean isValidDTO(createUserDTO dto){
-        return  isValidInput(dto.getFirstName()) && isValidInput(dto.getLastName()) && isValidInput(dto.getAddress()) && isValidInput(dto.getEmail()) && isValidInput(dto.getPhoneNumber());
-    }
-
-    public void assertAdmin(String id) {
-        List<String> toValidateAgainst =
-                customerRepository
-                        .getSavedUsersById()
-                        .values()
-                        .stream()
-                        .filter(User::isAdmin)
-                        .map(User::getId)
-                        .collect(Collectors.toList());
-        if (!toValidateAgainst.contains(id))
-            throw new AuthorisationException();
     }
 
 }

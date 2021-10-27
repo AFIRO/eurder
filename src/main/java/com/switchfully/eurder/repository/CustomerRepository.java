@@ -22,7 +22,7 @@ public class CustomerRepository {
         savedUsersById.put(user.getId(), user);
     }
 
-    public Map<String, User> getSavedUsersById() {
+    public Map<String, User> getAllUsers() {
         return savedUsersById;
     }
 
