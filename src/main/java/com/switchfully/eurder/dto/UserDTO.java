@@ -1,6 +1,6 @@
 package com.switchfully.eurder.dto;
 
-public class userDTO {
+public class UserDTO {
     private String id;
     private String firstName;
     private String lastName;
@@ -8,32 +8,32 @@ public class userDTO {
     private String address;
     private String phoneNumber;
 
-    public userDTO setId(String id) {
+    public UserDTO setId(String id) {
         this.id = id;
         return this;
     }
 
-    public userDTO setFirstName(String firstName) {
+    public UserDTO setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
 
-    public userDTO setLastName(String lastName) {
+    public UserDTO setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
 
-    public userDTO setEmail(String email) {
+    public UserDTO setEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public userDTO setAddress(String address) {
+    public UserDTO setAddress(String address) {
         this.address = address;
         return this;
     }
 
-    public userDTO setPhoneNumber(String phoneNumber) {
+    public UserDTO setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }

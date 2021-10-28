@@ -1,13 +1,14 @@
 package com.switchfully.eurder.services;
 
-import com.switchfully.eurder.dto.CreateItemDTO;
-import com.switchfully.eurder.dto.createUserDTO;
+import com.switchfully.eurder.dto.*;
+import com.switchfully.eurder.entities.ItemGroup;
 import com.switchfully.eurder.entities.User;
 import com.switchfully.eurder.exceptions.AuthorisationException;
 import com.switchfully.eurder.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.BreakIterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,28 +20,7 @@ public class ValidationService {
     public ValidationService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
-
-    public boolean isValidStringInput(String input) {
-        return !(input == null || input.isEmpty() || input.isBlank());
-    }
-
-    public boolean isValidDoubleInput(String number) {
-        try {
-            Double.parseDouble(number);
-            return true;
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("The parameter for the price is not valid.");
-        }
-    }
-
-    public boolean isValidIntegerInput(String number) {
-        try {
-            Integer.parseInt(number);
-            return true;
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("The parameter for the price is not valid.");
-        }
-    }
+    
 
     public boolean IsValidCreateUserDTO(createUserDTO dto) {
         return isValidStringInput(dto.getFirstName())
@@ -58,6 +38,27 @@ public class ValidationService {
 
     }
 
+    public boolean isValidCreateOrderDTO(CreateOrderDTO dto) {
+        return isValidStringInput(dto.getCustomerId())
+                && isValidCreateItemGroupDTOList(dto.getOrderedItems());
+    }
+
+    private boolean isValidCreateItemGroupDTOList(List<CreateItemGroupDTO> orderedItems) {
+        boolean returnValue = true;
+        
+        for (CreateItemGroupDTO itemGroup: orderedItems) {
+            returnValue = isValidItemGroup(itemGroup);
+            if (!returnValue)
+                break;
+        }
+        return returnValue;
+    }
+
+    private boolean isValidItemGroup(CreateItemGroupDTO dto) {
+        return isValidStringInput(dto.getItemId())
+                && isValidIntegerInput(dto.getAmountToOrder());
+    }
+
     public void assertAdmin(String id) {
         List<String> toValidateAgainst =
                 customerRepository
@@ -69,6 +70,29 @@ public class ValidationService {
                         .collect(Collectors.toList());
         if (!toValidateAgainst.contains(id))
             throw new AuthorisationException();
+    }
+
+
+    private boolean isValidStringInput(String input) {
+        return !(input == null || input.isEmpty() || input.isBlank());
+    }
+
+    private boolean isValidDoubleInput(String number) {
+        try {
+            Double.parseDouble(number);
+            return true;
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("The parameter for the price is not valid.");
+        }
+    }
+
+    private boolean isValidIntegerInput(String number) {
+        try {
+            Integer.parseInt(number);
+            return true;
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("The parameter for the price is not valid.");
+        }
     }
 
 

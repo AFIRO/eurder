@@ -1,43 +1,30 @@
 package com.switchfully.eurder.api;
 
-import com.switchfully.eurder.dto.CreateItemDTO;
-import com.switchfully.eurder.dto.ItemDTO;
-import com.switchfully.eurder.services.ItemService;
+import com.switchfully.eurder.dto.CreateOrderDTO;
+import com.switchfully.eurder.dto.OrderDTO;
+import com.switchfully.eurder.services.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/items")
 public class OrderController {
     private final OrderService orderService;
-    private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+    private final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
-    public OrderController(ItemService itemService) {
-        this.itemService = itemService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
-    @PostMapping(produces = "application/json", consumes = "application/json", params = "authorisationId")
+    @PostMapping(produces = "application/json", consumes = "application/json", params = "customerId")
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDTO createItem(@RequestParam(value = "authorisationId") String authorisationId, @RequestBody CreateItemDTO dto) {
-        return itemService.createNewItem(authorisationId,dto);
+    public OrderDTO createItem(@RequestParam(value = "customerId") String customerId, @RequestBody CreateOrderDTO dto) {
+        return orderService.createNewOrder(customerId,dto);
     }
 
-    @GetMapping(produces = "application/json", params = "authorisationId")
-    @ResponseStatus(HttpStatus.OK)
-    public List<ItemDTO> getAllItemsByStock(@RequestParam(value = "authorisationId") String authorisationId) {
-        return itemService.getAllItemsByStock(authorisationId);
-    }
-
-    @GetMapping(produces = "application/json", params = {"authorisationId","urgency"})
-    @ResponseStatus(HttpStatus.OK)
-    public List<ItemDTO> getItemsByUrgency(@RequestParam(value = "authorisationId") String authorisationId, @RequestParam(value = "urgency", required = false) String urgency) {
-        return itemService.getItemsByUrgency(authorisationId, urgency);
-    }
 
 }

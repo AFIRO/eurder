@@ -1,7 +1,7 @@
 package com.switchfully.eurder.services;
 
 import com.switchfully.eurder.dto.createUserDTO;
-import com.switchfully.eurder.dto.userDTO;
+import com.switchfully.eurder.dto.UserDTO;
 import com.switchfully.eurder.entities.User;
 import com.switchfully.eurder.mappers.CustomerMapper;
 import com.switchfully.eurder.repository.CustomerRepository;
@@ -27,7 +27,7 @@ public class CustomerService {
         this.validationService = validationService;
     }
 
-    public userDTO saveNewUser(createUserDTO dto) {
+    public UserDTO saveNewUser(createUserDTO dto) {
         if (validationService.IsValidCreateUserDTO(dto)) {
             User newUser = customerMapper.toUser(dto);
             customerRepository.saveUser(newUser);
@@ -37,7 +37,7 @@ public class CustomerService {
             throw new IllegalArgumentException("The parameters supplied for your user account are not valid");
     }
 
-    public userDTO saveNewAdmin(String authorisationId, createUserDTO dto) {
+    public UserDTO saveNewAdmin(String authorisationId, createUserDTO dto) {
         validationService.assertAdmin(authorisationId);
         if (validationService.IsValidCreateUserDTO(dto)) {
             User newUser = customerMapper.toUser(dto);
@@ -51,7 +51,7 @@ public class CustomerService {
     }
 
 
-    public List<userDTO> getAllUsers(String id) {
+    public List<UserDTO> getAllUsers(String id) {
         validationService.assertAdmin(id);
         return customerRepository.getAllUsers().values().stream()
                 .map(customerMapper::toDTO)
@@ -59,7 +59,7 @@ public class CustomerService {
     }
 
 
-    public userDTO getSpecificUser(String authorisationId, String customerId) {
+    public UserDTO getSpecificUser(String authorisationId, String customerId) {
         validationService.assertAdmin(authorisationId);
         return customerMapper.toDTO(customerRepository.getSpecificUser(customerId));
     }
