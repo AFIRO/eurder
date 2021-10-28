@@ -34,6 +34,7 @@ public class ItemService {
         if (validationService.isValidCreateItemDTO(dto)) {
             Item newItem = itemMapper.toItem(dto);
             itemRepository.saveNewItem(newItem);
+            logger.info("Item with ID " + newItem.getId() + "created");
             return itemMapper.toDTO(newItem);
         } else
             throw new IllegalArgumentException("Your parameters for the new item are not valid");

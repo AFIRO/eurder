@@ -5,13 +5,14 @@ import java.util.UUID;
 
 
 public class User {
+    public enum Role {CUSTOMER, ADMIN}
     private final String id;
     private final String firstName;
     private final String lastName;
     private String email;
     private String address;
     private String phoneNumber;
-    private boolean isAdmin;
+    private Role role;
 
 
     public User(String firstName, String lastName, String email, String address, String phoneNumber) {
@@ -21,6 +22,7 @@ public class User {
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.role = Role.CUSTOMER;
     }
 
     public String getFirstName() {
@@ -48,11 +50,11 @@ public class User {
     }
 
     public boolean isAdmin() {
-        return isAdmin;
+        return role.equals(Role.ADMIN);
     }
 
-    public User setAdmin(boolean admin) {
-        isAdmin = admin;
+    public User setAdmin() {
+        this.role = Role.ADMIN;
         return this;
     }
 

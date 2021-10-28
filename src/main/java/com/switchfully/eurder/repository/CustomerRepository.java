@@ -13,7 +13,7 @@ public class CustomerRepository {
 
     public CustomerRepository() {
         savedUsersById = new ConcurrentHashMap();
-        User rootAdmin = new User("root", "admin", "admin@admin.admin", "admin", "admin").setAdmin(true);
+        User rootAdmin = new User("root", "admin", "admin@admin.admin", "admin", "admin").setAdmin();
         System.out.println("Root admin for testing  = " + rootAdmin.getId());
         savedUsersById.put(rootAdmin.getId(), rootAdmin);
     }

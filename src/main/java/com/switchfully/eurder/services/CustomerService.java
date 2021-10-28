@@ -41,7 +41,7 @@ public class CustomerService {
         validationService.assertAdmin(authorisationId);
         if (validationService.IsValidCreateUserDTO(dto)) {
             User newUser = customerMapper.toUser(dto);
-            newUser.setAdmin(true);
+            newUser.setAdmin();
             customerRepository.saveUser(newUser);
             logger.info("User with the following id has been created: " + newUser.getId());
             return customerMapper.toDTO(newUser);

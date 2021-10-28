@@ -13,33 +13,30 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/items")
-public class ItemController {
-    private final ItemService itemService;
+public class OrderController {
+    private final OrderService orderService;
     private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
-    public ItemController(ItemService itemService) {
+    public OrderController(ItemService itemService) {
         this.itemService = itemService;
     }
 
     @PostMapping(produces = "application/json", consumes = "application/json", params = "authorisationId")
     @ResponseStatus(HttpStatus.CREATED)
     public ItemDTO createItem(@RequestParam(value = "authorisationId") String authorisationId, @RequestBody CreateItemDTO dto) {
-        logger.info("Item creation called by user " + authorisationId);
         return itemService.createNewItem(authorisationId,dto);
     }
 
     @GetMapping(produces = "application/json", params = "authorisationId")
     @ResponseStatus(HttpStatus.OK)
     public List<ItemDTO> getAllItemsByStock(@RequestParam(value = "authorisationId") String authorisationId) {
-        logger.info("Get all items by stock urgency called by user " + authorisationId);
         return itemService.getAllItemsByStock(authorisationId);
     }
 
     @GetMapping(produces = "application/json", params = {"authorisationId","urgency"})
     @ResponseStatus(HttpStatus.OK)
     public List<ItemDTO> getItemsByUrgency(@RequestParam(value = "authorisationId") String authorisationId, @RequestParam(value = "urgency", required = false) String urgency) {
-        logger.info("Get item filtered by urgency called by user " + authorisationId);
         return itemService.getItemsByUrgency(authorisationId, urgency);
     }
 
