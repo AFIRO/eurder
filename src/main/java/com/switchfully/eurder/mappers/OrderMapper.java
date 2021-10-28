@@ -19,34 +19,46 @@ import java.util.stream.Collectors;
 public class OrderMapper {
     private final ItemRepository itemRepository;
     private final CustomerRepository customerRepository;
+    private final ItemMapper itemMapper;
 
     @Autowired
-    public OrderMapper(ItemRepository itemRepository, CustomerRepository customerRepository) {
+    public OrderMapper(ItemRepository itemRepository, CustomerRepository customerRepository, ItemMapper itemMapper) {
         this.itemRepository = itemRepository;
         this.customerRepository = customerRepository;
+        this.itemMapper = itemMapper;
     }
 
-    public Order toOrder(CreateOrderDTO dto) {
+    public Order toOrder(String customerId, CreateOrderDTO dto) {
         List<ItemGroup> orderedItems = dto.getOrderedItems().stream()
                 .map(this::toItemGroup)
                 .collect(Collectors.toList());
 
         return new Order(itemRepository)
-                .setCustomer(customerRepository.getSpecificUser(dto.getCustomerId()))
+                .setCustomer(customerRepository.getSpecificUser(customerId))
                 .addListOfItemGroupToOrder(orderedItems);
     }
 
     public OrderDTO toOrderDTO(Order order){
+        List<ItemGroupDTO> orderedItems = order.getOrderedItems().stream().map(this::toItemGroupDTO).collect(Collectors.toList());
         return new OrderDTO()
-                .setId(order.getId())
-                .setCustomer(order.getCustomer())
-                .setOrderedItems(order.getOrderedItems())
+                .setOrderId(order.getId())
+                .setCustomerId(order.getCustomer().getId())
+                .setOrderedItems(orderedItems)
                 .setTotalPrice(order.getTotalPrice());
     }
+
 
     public ItemGroup toItemGroup(CreateItemGroupDTO dto){
         Item itemToAdd = itemRepository.getItem(dto.getItemId());
         return new ItemGroup(itemToAdd,Integer.parseInt(dto.getAmountToOrder()));
+    }
+
+    private ItemGroupDTO toItemGroupDTO(ItemGroup itemGroup) {
+        return new ItemGroupDTO()
+                .setItem(itemMapper.toItemDTO(itemGroup.getItem()))
+                .setAmountToOrder(itemGroup.getAmountToOrder())
+                .setCostForItemGroup(itemGroup.getCostForItemGroup())
+                .setShippingDate(itemGroup.getShippingDate());
     }
 
 }

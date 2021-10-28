@@ -2,11 +2,10 @@ package com.switchfully.eurder.dto;
 
 public class ItemDTO {
 
-    private String id;
+    private String itemId;
     private String name;
     private String Description;
     private double price;
-    private int amountInStock;
 
 
     public ItemDTO setName(String name) {
@@ -24,13 +23,9 @@ public class ItemDTO {
         return this;
     }
 
-    public ItemDTO setAmountInStock(int amountInStock) {
-        this.amountInStock = amountInStock;
-        return this;
-    }
 
-    public ItemDTO setId(String id) {
-        this.id = id;
+    public ItemDTO setItemId(String itemId) {
+        this.itemId = itemId;
         return this;
     }
 
@@ -46,12 +41,9 @@ public class ItemDTO {
         return price;
     }
 
-    public double getAmountInStock() {
-        return amountInStock;
-    }
 
-    public String getId() {
-        return id;
+    public String getItemId() {
+        return itemId;
     }
 
 }

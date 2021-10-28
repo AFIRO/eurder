@@ -6,6 +6,7 @@ import com.switchfully.eurder.entities.ItemGroup;
 import com.switchfully.eurder.entities.Order;
 import com.switchfully.eurder.exceptions.AuthorisationException;
 import com.switchfully.eurder.mappers.OrderMapper;
+import com.switchfully.eurder.repository.CustomerRepository;
 import com.switchfully.eurder.repository.ItemRepository;
 import com.switchfully.eurder.repository.OrderRepository;
 import org.slf4j.Logger;
@@ -18,20 +19,22 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
+    private final CustomerRepository customerRepository;
     private final ValidationService validationService;
     private final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     @Autowired
-    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, ItemRepository itemRepository, ValidationService validationService) {
+    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, ItemRepository itemRepository, CustomerRepository customerRepository, ValidationService validationService) {
         this.orderMapper = orderMapper;
         this.orderRepository = orderRepository;
         this.itemRepository = itemRepository;
+        this.customerRepository = customerRepository;
         this.validationService = validationService;
     }
 
     public OrderDTO createNewOrder(String customerId, CreateOrderDTO dto) {
-        if (validationService.isValidCreateOrderDTO(dto)) {
-            Order newOrder = orderMapper.toOrder(dto);
+        if (validationService.isValidCreateOrderDTO(dto) && customerRepository.getAllUsers().containsKey(customerId)) {
+            Order newOrder = orderMapper.toOrder(customerId,dto);
             orderRepository.saveOrder(newOrder);
             logger.info("Order with id " + newOrder.getId() + " saved");
             return orderMapper.toOrderDTO(newOrder);

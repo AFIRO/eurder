@@ -40,8 +40,7 @@ public class ValidationService {
     }
 
     public boolean isValidCreateOrderDTO(CreateOrderDTO dto) {
-        return isValidStringInput(dto.getCustomerId())
-                && isValidCreateItemGroupDTOList(dto.getOrderedItems());
+        return isValidCreateItemGroupDTOList(dto.getOrderedItems());
     }
 
     private boolean isValidCreateItemGroupDTOList(List<CreateItemGroupDTO> orderedItems) {

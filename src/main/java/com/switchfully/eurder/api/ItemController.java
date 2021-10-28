@@ -2,6 +2,7 @@ package com.switchfully.eurder.api;
 
 import com.switchfully.eurder.dto.CreateItemDTO;
 import com.switchfully.eurder.dto.ItemDTO;
+import com.switchfully.eurder.dto.ItemWithStockDTO;
 import com.switchfully.eurder.services.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,21 +25,21 @@ public class ItemController {
 
     @PostMapping(produces = "application/json", consumes = "application/json", params = "authorisationId")
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDTO createItem(@RequestParam(value = "authorisationId") String authorisationId, @RequestBody CreateItemDTO dto) {
+    public ItemWithStockDTO createItem(@RequestParam(value = "authorisationId") String authorisationId, @RequestBody CreateItemDTO dto) {
         logger.info("Item creation called by user " + authorisationId);
         return itemService.createNewItem(authorisationId,dto);
     }
 
     @GetMapping(produces = "application/json", params = "authorisationId")
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemDTO> getAllItemsByStock(@RequestParam(value = "authorisationId") String authorisationId) {
+    public List<ItemWithStockDTO> getAllItemsByStock(@RequestParam(value = "authorisationId") String authorisationId) {
         logger.info("Get all items by stock urgency called by user " + authorisationId);
         return itemService.getAllItemsByStock(authorisationId);
     }
 
     @GetMapping(produces = "application/json", params = {"authorisationId","urgency"})
     @ResponseStatus(HttpStatus.OK)
-    public List<ItemDTO> getItemsByUrgency(@RequestParam(value = "authorisationId") String authorisationId, @RequestParam(value = "urgency", required = false) String urgency) {
+    public List<ItemWithStockDTO> getItemsByUrgency(@RequestParam(value = "authorisationId") String authorisationId, @RequestParam(value = "urgency", required = false) String urgency) {
         logger.info("Get item filtered by urgency called by user " + authorisationId);
         return itemService.getItemsByUrgency(authorisationId, urgency);
     }

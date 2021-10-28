@@ -2,6 +2,7 @@ package com.switchfully.eurder.mappers;
 
 import com.switchfully.eurder.dto.CreateItemDTO;
 import com.switchfully.eurder.dto.ItemDTO;
+import com.switchfully.eurder.dto.ItemWithStockDTO;
 import com.switchfully.eurder.entities.Item;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +16,21 @@ public class ItemMapper {
                 .setAmountInStock(Integer.parseInt(dto.getAmountInStock()));
     }
 
-    public ItemDTO toDTO(Item item) {
+    public ItemDTO toItemDTO(Item item) {
         return new ItemDTO()
-                .setId(item.getId())
+                .setItemId(item.getId())
+                .setName(item.getName())
+                .setDescription(item.getDescription())
+                .setPrice(item.getPrice());
+    }
+
+    public ItemWithStockDTO toItemWithStockDTO(Item item){
+        return new ItemWithStockDTO()
+                .setItemId(item.getId())
                 .setName(item.getName())
                 .setDescription(item.getDescription())
                 .setPrice(item.getPrice())
-                .setAmountInStock(item.getAmountInStock());
+                .setStockAmount(item.getAmountInStock())
+                .setUrgency(item.getStockUrgencyIndicator());
     }
 }

@@ -2,6 +2,7 @@ package com.switchfully.eurder.services;
 
 import com.switchfully.eurder.dto.CreateItemDTO;
 import com.switchfully.eurder.dto.ItemDTO;
+import com.switchfully.eurder.dto.ItemWithStockDTO;
 import com.switchfully.eurder.entities.Item;
 import com.switchfully.eurder.exceptions.UrgencyException;
 import com.switchfully.eurder.mappers.ItemMapper;
@@ -29,53 +30,53 @@ public class ItemService {
     }
 
 
-    public ItemDTO createNewItem(String authorisationId, CreateItemDTO dto) {
+    public ItemWithStockDTO createNewItem(String authorisationId, CreateItemDTO dto) {
         validationService.assertAdmin(authorisationId);
         if (validationService.isValidCreateItemDTO(dto)) {
             Item newItem = itemMapper.toItem(dto);
             itemRepository.saveNewItem(newItem);
             logger.info("Item with ID " + newItem.getId() + "created");
-            return itemMapper.toDTO(newItem);
+            return itemMapper.toItemWithStockDTO(newItem);
         } else
             throw new IllegalArgumentException("Your parameters for the new item are not valid");
     }
 
-    public List<ItemDTO> getAllItemsByStock(String authorisationId) {
+    public List<ItemWithStockDTO> getAllItemsByStock(String authorisationId) {
         validationService.assertAdmin(authorisationId);
-        List<ItemDTO> stockLow = itemRepository.getAllItems().values().stream()
+        List<ItemWithStockDTO> stockLow = itemRepository.getAllItems().values().stream()
                 .filter((e) -> e.getStockUrgencyIndicator().equals(Item.StockUrgencyIndicator.STOCK_LOW))
-                .map(itemMapper::toDTO)
+                .map(itemMapper::toItemWithStockDTO)
                 .collect(Collectors.toList());
-        List<ItemDTO> stockMedium = itemRepository.getAllItems().values().stream()
+        List<ItemWithStockDTO> stockMedium = itemRepository.getAllItems().values().stream()
                 .filter((e) -> e.getStockUrgencyIndicator().equals(Item.StockUrgencyIndicator.STOCK_MEDIUM))
-                .map(itemMapper::toDTO)
+                .map(itemMapper::toItemWithStockDTO)
                 .collect(Collectors.toList());
-        List<ItemDTO> stockHight = itemRepository.getAllItems().values().stream()
+        List<ItemWithStockDTO> stockHight = itemRepository.getAllItems().values().stream()
                 .filter((e) -> e.getStockUrgencyIndicator().equals(Item.StockUrgencyIndicator.STOCK_HIGH))
-                .map(itemMapper::toDTO)
+                .map(itemMapper::toItemWithStockDTO)
                 .collect(Collectors.toList());
         stockLow.addAll(stockMedium);
         stockLow.addAll(stockHight);
         return stockLow;
     }
 
-    public List<ItemDTO> getItemsByUrgency(String authorisationId, String urgency) {
+    public List<ItemWithStockDTO> getItemsByUrgency(String authorisationId, String urgency) {
         validationService.assertAdmin(authorisationId);
         urgency = urgency.toLowerCase();
-        List<ItemDTO> toReturn;
+        List<ItemWithStockDTO> toReturn;
 
         switch (urgency) {
             case "low": return itemRepository.getAllItems().values().stream()
                     .filter((e) -> e.getStockUrgencyIndicator().equals(Item.StockUrgencyIndicator.STOCK_LOW))
-                    .map(itemMapper::toDTO)
+                    .map(itemMapper::toItemWithStockDTO)
                     .collect(Collectors.toList());
             case "medium": return itemRepository.getAllItems().values().stream()
                     .filter((e) -> e.getStockUrgencyIndicator().equals(Item.StockUrgencyIndicator.STOCK_MEDIUM))
-                    .map(itemMapper::toDTO)
+                    .map(itemMapper::toItemWithStockDTO)
                     .collect(Collectors.toList());
             case "high": return itemRepository.getAllItems().values().stream()
                     .filter((e) -> e.getStockUrgencyIndicator().equals(Item.StockUrgencyIndicator.STOCK_HIGH))
-                    .map(itemMapper::toDTO)
+                    .map(itemMapper::toItemWithStockDTO)
                     .collect(Collectors.toList());
             default: throw new UrgencyException();
         }

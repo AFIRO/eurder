@@ -10,13 +10,7 @@ import java.util.List;
 
 public class CreateOrderDTO {
     private List<CreateItemGroupDTO> orderedItems;
-    private String customerId;
 
-
-    public CreateOrderDTO setCustomer(String customerId) {
-        this.customerId = customerId;
-        return this;
-    }
 
     public CreateOrderDTO setOrderedItems(List<CreateItemGroupDTO> orderedItems) {
         this.orderedItems = orderedItems;
@@ -27,8 +21,6 @@ public class CreateOrderDTO {
         return orderedItems;
     }
 
-    public String getCustomerId() {
-        return customerId;
-    }
+
 
 }

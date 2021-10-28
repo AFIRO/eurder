@@ -6,24 +6,24 @@ import com.switchfully.eurder.entities.User;
 import java.util.List;
 
 public class OrderDTO {
-    private String id;
-    private User customer;
-    private List<ItemGroup> orderedItems;
+    private String orderId;
+    private String customerId;
+    private List<ItemGroupDTO> orderedItems;
     private double totalPrice;
 
 
 
-    public OrderDTO setCustomer(User customer) {
-        this.customer = customer;
+    public OrderDTO setCustomerId(String customerId) {
+        this.customerId = customerId;
         return this;
     }
 
-    public OrderDTO setId(String id) {
-        this.id = id;
+    public OrderDTO setOrderId(String orderId) {
+        this.orderId = orderId;
         return this;
     }
 
-    public OrderDTO setOrderedItems(List<ItemGroup> orderedItems) {
+    public OrderDTO setOrderedItems(List<ItemGroupDTO> orderedItems) {
         this.orderedItems = orderedItems;
         return this;
     }
@@ -33,7 +33,7 @@ public class OrderDTO {
         return this;
     }
 
-    public List<ItemGroup> getOrderedItems() {
+    public List<ItemGroupDTO> getOrderedItems() {
         return orderedItems;
     }
 
@@ -41,11 +41,11 @@ public class OrderDTO {
         return totalPrice;
     }
 
-    public User getCustomer() {
-        return customer;
+    public String getCustomer() {
+        return customerId;
     }
 
     public String getId() {
-        return id;
+        return orderId;
     }
 }

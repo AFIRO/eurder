@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/items")
+@RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
     private final Logger logger = LoggerFactory.getLogger(OrderController.class);

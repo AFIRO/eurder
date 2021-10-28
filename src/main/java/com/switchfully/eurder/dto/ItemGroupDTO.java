@@ -5,12 +5,12 @@ import com.switchfully.eurder.entities.Item;
 import java.time.LocalDate;
 
 public class ItemGroupDTO {
-    private Item item;
+    private ItemDTO item;
     private int amountToOrder;
     private double costForItemGroup;
     private LocalDate shippingDate;
 
-    public ItemGroupDTO setItem(Item item) {
+    public ItemGroupDTO setItem(ItemDTO item) {
         this.item = item;
         return this;
     }
@@ -30,7 +30,7 @@ public class ItemGroupDTO {
         return this;
     }
 
-    public Item getItem() {
+    public ItemDTO getItem() {
         return item;
     }
 

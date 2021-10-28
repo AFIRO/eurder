@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Customer")
+@RequestMapping("/customer")
 public class CustomerController {
     private final CustomerService customerService;
     private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
@@ -48,7 +48,7 @@ public class CustomerController {
     @GetMapping(produces = "application/json", params = {"authorisationId", "customerId"})
     @ResponseStatus(HttpStatus.OK)
     public UserDTO getSpecificUser(@RequestParam("authorisationId") String authorisationId, @RequestParam (value = "customerId", required = false) String customerId ){
-        logger.info("Get specific users called by admin " + authorisationId + "for user " + customerId);
+        logger.info("Get specific users called by admin " + authorisationId + " for user " + customerId);
         return customerService.getSpecificUser(authorisationId, customerId);
     }
 }
