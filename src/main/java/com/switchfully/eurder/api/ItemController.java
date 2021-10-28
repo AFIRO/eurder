@@ -3,6 +3,7 @@ package com.switchfully.eurder.api;
 import com.switchfully.eurder.dto.CreateItemDTO;
 import com.switchfully.eurder.dto.ItemDTO;
 import com.switchfully.eurder.dto.ItemWithStockDTO;
+import com.switchfully.eurder.dto.UpdateItemDTO;
 import com.switchfully.eurder.services.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,12 @@ public class ItemController {
     public List<ItemWithStockDTO> getItemsByUrgency(@RequestParam(value = "authorisationId") String authorisationId, @RequestParam(value = "urgency", required = false) String urgency) {
         logger.info("Get item filtered by urgency called by user " + authorisationId);
         return itemService.getItemsByUrgency(authorisationId, urgency);
+    }
+
+    @PutMapping(produces = "application/json", consumes = "application/json", params = {"authorisationId", "itemId"})
+    @ResponseStatus(HttpStatus.OK)
+    public ItemWithStockDTO updateItem(@RequestParam(value = "authorisationId") String authorisationId,@RequestParam(value = "itemId") String itemId, @RequestBody UpdateItemDTO dto){
+        return itemService.updateItem(authorisationId,itemId,dto);
     }
 
 }

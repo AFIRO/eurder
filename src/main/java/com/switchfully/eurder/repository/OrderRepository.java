@@ -34,8 +34,9 @@ public class OrderRepository {
     }
 
     public List<Order> getAllOrdersOfSpecificUser(String customerId) {
-        return ordersByOrderId.values().stream()
-                .filter(order -> order.getCustomer().getId() == customerId)
+        return ordersByOrderId.values()
+                .stream()
+                .filter(order -> order.getCustomer().getId().equals(customerId))
                 .collect(Collectors.toList());
     }
 

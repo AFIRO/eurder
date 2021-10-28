@@ -1,14 +1,12 @@
 package com.switchfully.eurder.services;
 
 import com.switchfully.eurder.dto.*;
-import com.switchfully.eurder.entities.ItemGroup;
 import com.switchfully.eurder.entities.User;
 import com.switchfully.eurder.exceptions.AuthorisationException;
 import com.switchfully.eurder.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.BreakIterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +23,7 @@ public class ValidationService {
     public boolean IsValidCreateUserDTO(createUserDTO dto) {
         return isValidStringInput(dto.getFirstName())
                 && isValidStringInput(dto.getLastName())
-                && isValidEmail(dto.getAddress())
+                && isValidStringInput(dto.getAddress())
                 && isValidStringInput(dto.getEmail())
                 && isValidStringInput(dto.getPhoneNumber());
     }
@@ -39,6 +37,13 @@ public class ValidationService {
 
     }
 
+    public boolean isValidUpdateItemDTO(UpdateItemDTO dto) {
+        return isValidStringInput(dto.getName())
+                && isValidStringInput(dto.getDescription())
+                && isValidDoubleInput(dto.getPrice())
+                && isValidIntegerInput(dto.getAmountInStock());
+    }
+
     public boolean isValidCreateOrderDTO(CreateOrderDTO dto) {
         return isValidCreateItemGroupDTOList(dto.getOrderedItems());
     }
@@ -47,17 +52,19 @@ public class ValidationService {
         boolean returnValue = true;
         
         for (CreateItemGroupDTO itemGroup: orderedItems) {
-            returnValue = isValidItemGroup(itemGroup);
+            returnValue = isValidCreateItemGroupDTO(itemGroup);
             if (!returnValue)
                 break;
         }
         return returnValue;
     }
 
-    private boolean isValidItemGroup(CreateItemGroupDTO dto) {
+    private boolean isValidCreateItemGroupDTO(CreateItemGroupDTO dto) {
         return isValidStringInput(dto.getItemId())
                 && isValidIntegerInput(dto.getAmountToOrder());
     }
+
+
 
     public void assertAdmin(String id) {
         List<String> toValidateAgainst =
@@ -77,10 +84,6 @@ public class ValidationService {
         return !(input == null || input.isEmpty() || input.isBlank());
     }
 
-    private boolean isValidEmail(String address) {
-        return isValidStringInput(address)
-                && address.contains("@");
-    }
 
     private boolean isValidDoubleInput(String number) {
         try {
@@ -99,6 +102,7 @@ public class ValidationService {
             throw new NumberFormatException("The parameter for the price is not valid.");
         }
     }
+
 
 
 }

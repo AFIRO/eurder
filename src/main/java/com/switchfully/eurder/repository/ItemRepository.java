@@ -31,4 +31,8 @@ public class ItemRepository {
         else
             throw new NoSuchElementException("The ordered Item does not exist");
     }
+
+    public void updateItem(Item updatedItem) {
+        itemsById.replace(updatedItem.getId(), updatedItem);
+    }
 }
