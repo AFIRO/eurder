@@ -2,6 +2,8 @@ package com.switchfully.eurder.api;
 
 import com.switchfully.eurder.dto.CreateOrderDTO;
 import com.switchfully.eurder.dto.OrderDTO;
+import com.switchfully.eurder.dto.OrderReportDTO;
+import com.switchfully.eurder.dto.ShippingReportDTO;
 import com.switchfully.eurder.services.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,18 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDTO reorderExistingOrder(@RequestParam(value = "customerId") String customerId,@RequestParam(value = "orderId", required = false)  String orderId) {
         return orderService.reorderExistingOrder(customerId,orderId);
+    }
+
+    @GetMapping(produces = "application/json", params = {"customerId"})
+    @ResponseStatus(HttpStatus.OK)
+    public OrderReportDTO getReportOfCustomerOrders(@RequestParam(value = "customerId", required = false) String customerId) {
+        return orderService.getReportOfCustomerOrders(customerId);
+    }
+
+    @GetMapping(produces = "application/json", params = {"authorisationId"})
+    @ResponseStatus(HttpStatus.OK)
+    public ShippingReportDTO getReportOfOutgoingShippingForToday(@RequestParam(value = "authorisationId",required = false) String authorisationId) {
+        return orderService.getReportOfOutgoingShippingForToday(authorisationId);
     }
 
 

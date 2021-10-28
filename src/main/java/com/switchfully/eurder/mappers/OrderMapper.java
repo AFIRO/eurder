@@ -1,14 +1,13 @@
 package com.switchfully.eurder.mappers;
 
-import com.switchfully.eurder.dto.CreateItemGroupDTO;
-import com.switchfully.eurder.dto.CreateOrderDTO;
-import com.switchfully.eurder.dto.ItemGroupDTO;
-import com.switchfully.eurder.dto.OrderDTO;
+import com.switchfully.eurder.dto.*;
 import com.switchfully.eurder.entities.Item;
 import com.switchfully.eurder.entities.ItemGroup;
 import com.switchfully.eurder.entities.Order;
+import com.switchfully.eurder.entities.User;
 import com.switchfully.eurder.repository.CustomerRepository;
 import com.switchfully.eurder.repository.ItemRepository;
+import com.switchfully.eurder.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,12 +19,14 @@ public class OrderMapper {
     private final ItemRepository itemRepository;
     private final CustomerRepository customerRepository;
     private final ItemMapper itemMapper;
+    private final OrderRepository orderRepository;
 
     @Autowired
-    public OrderMapper(ItemRepository itemRepository, CustomerRepository customerRepository, ItemMapper itemMapper) {
+    public OrderMapper(ItemRepository itemRepository, CustomerRepository customerRepository, ItemMapper itemMapper, OrderRepository orderRepository) {
         this.itemRepository = itemRepository;
         this.customerRepository = customerRepository;
         this.itemMapper = itemMapper;
+        this.orderRepository = orderRepository;
     }
 
     public Order toOrder(String customerId, CreateOrderDTO dto) {
@@ -38,8 +39,12 @@ public class OrderMapper {
                 .addListOfItemGroupToOrder(orderedItems);
     }
 
-    public OrderDTO toOrderDTO(Order order){
-        List<ItemGroupDTO> orderedItems = order.getOrderedItems().stream().map(this::toItemGroupDTO).collect(Collectors.toList());
+    public OrderDTO toOrderDTO(Order order) {
+        List<ItemGroupDTO> orderedItems = order.getOrderedItems()
+                .stream()
+                .map(this::toItemGroupDTO)
+                .collect(Collectors.toList());
+
         return new OrderDTO()
                 .setOrderId(order.getId())
                 .setCustomerId(order.getCustomer().getId())
@@ -48,9 +53,9 @@ public class OrderMapper {
     }
 
 
-    public ItemGroup toItemGroup(CreateItemGroupDTO dto){
+    public ItemGroup toItemGroup(CreateItemGroupDTO dto) {
         Item itemToAdd = itemRepository.getItem(dto.getItemId());
-        return new ItemGroup(itemToAdd,Integer.parseInt(dto.getAmountToOrder()));
+        return new ItemGroup(itemToAdd, Integer.parseInt(dto.getAmountToOrder()));
     }
 
     private ItemGroupDTO toItemGroupDTO(ItemGroup itemGroup) {
@@ -61,4 +66,20 @@ public class OrderMapper {
                 .setShippingDate(itemGroup.getShippingDate());
     }
 
+    public ItemGroupDTOWithAddress toItemGroupDTOWithAddress(ItemGroup itemGroup) {
+        String address = orderRepository.getAllOrders()
+                .stream()
+                .filter(order -> order.getOrderedItems().contains(itemGroup))
+                .map(Order::getCustomer)
+                .map(User::getAddress)
+                .collect(Collectors.joining());
+
+        return new ItemGroupDTOWithAddress()
+                .setItem(itemMapper.toItemDTO(itemGroup.getItem()))
+                .setCostForItemGroup(itemGroup.getCostForItemGroup())
+                .setAmountToOrder(itemGroup.getAmountToOrder())
+                .setShippingDate(itemGroup.getShippingDate())
+                .setAddressToShipTo(address);
+
+    }
 }

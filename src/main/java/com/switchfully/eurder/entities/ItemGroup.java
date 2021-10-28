@@ -1,6 +1,7 @@
 package com.switchfully.eurder.entities;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class ItemGroup {
     private final Item item;
@@ -43,4 +44,19 @@ public class ItemGroup {
     public LocalDate getShippingDate() {
         return shippingDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ItemGroup)) return false;
+        ItemGroup itemGroup = (ItemGroup) o;
+        return getAmountToOrder() == itemGroup.getAmountToOrder() && Double.compare(itemGroup.getCostForItemGroup(), getCostForItemGroup()) == 0 && Objects.equals(getItem(), itemGroup.getItem()) && Objects.equals(getShippingDate(), itemGroup.getShippingDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getItem(), getAmountToOrder(), getCostForItemGroup(), getShippingDate());
+    }
 }
+
+

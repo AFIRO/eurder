@@ -66,15 +66,18 @@ public class ItemService {
         List<ItemWithStockDTO> toReturn;
 
         switch (urgency) {
-            case "low": return itemRepository.getAllItems().values().stream()
+            case "low": return itemRepository.getAllItems().values()
+                    .stream()
                     .filter((e) -> e.getStockUrgencyIndicator().equals(Item.StockUrgencyIndicator.STOCK_LOW))
                     .map(itemMapper::toItemWithStockDTO)
                     .collect(Collectors.toList());
-            case "medium": return itemRepository.getAllItems().values().stream()
+            case "medium": return itemRepository.getAllItems().values()
+                    .stream()
                     .filter((e) -> e.getStockUrgencyIndicator().equals(Item.StockUrgencyIndicator.STOCK_MEDIUM))
                     .map(itemMapper::toItemWithStockDTO)
                     .collect(Collectors.toList());
-            case "high": return itemRepository.getAllItems().values().stream()
+            case "high": return itemRepository.getAllItems().values()
+                    .stream()
                     .filter((e) -> e.getStockUrgencyIndicator().equals(Item.StockUrgencyIndicator.STOCK_HIGH))
                     .map(itemMapper::toItemWithStockDTO)
                     .collect(Collectors.toList());
