@@ -51,8 +51,9 @@ public class CustomerService {
     }
 
 
-    public List<UserDTO> getAllUsers(String id) {
-        validationService.assertAdmin(id);
+    public List<UserDTO> getAllUsers(String authorisationId) {
+        validationService.assertAdmin(authorisationId);
+        logger.info("Info of all users called by admin " + authorisationId);
         return customerRepository.getAllUsers().values().stream()
                 .map(customerMapper::toDTO)
                 .collect(Collectors.toList());
@@ -61,6 +62,7 @@ public class CustomerService {
 
     public UserDTO getSpecificUser(String authorisationId, String customerId) {
         validationService.assertAdmin(authorisationId);
+        logger.info("Info of User " + customerId + "called by admin " + authorisationId);
         return customerMapper.toDTO(customerRepository.getSpecificUser(customerId));
     }
 

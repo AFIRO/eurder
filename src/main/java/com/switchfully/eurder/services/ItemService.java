@@ -51,6 +51,7 @@ public class ItemService {
             toUpdate = itemRepository.getItem(itemId);
             updatedItem = itemMapper.updateItem(toUpdate, dto);
             itemRepository.updateItem(updatedItem);
+            logger.info("Item with ID " + updatedItem.getId() + " updated");
             return itemMapper.toItemWithStockDTO(updatedItem);
         }
         else
@@ -59,6 +60,8 @@ public class ItemService {
 
     public List<ItemWithStockDTO> getAllItemsByStock(String authorisationId) {
         validationService.assertAdmin(authorisationId);
+        logger.info("Stock info called by admin " + authorisationId);
+
         List<ItemWithStockDTO> stockLow = itemRepository.getAllItems().values().stream()
                 .filter((e) -> e.getStockUrgencyIndicator().equals(Item.StockUrgencyIndicator.STOCK_LOW))
                 .map(itemMapper::toItemWithStockDTO)
@@ -79,6 +82,8 @@ public class ItemService {
     public List<ItemWithStockDTO> getItemsByUrgency(String authorisationId, String urgency) {
         validationService.assertAdmin(authorisationId);
         urgency = urgency.toLowerCase();
+        logger.info("Stock info of urgency " + urgency +  " called by admin " + authorisationId);
+
         List<ItemWithStockDTO> toReturn;
 
         switch (urgency) {

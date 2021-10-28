@@ -56,6 +56,7 @@ public class OrderService {
                 newOrder.addItemToOrder(itemGroup.getItem().getId(), itemGroup.getAmountToOrder());
             newOrder.setCustomer(existingOrder.getCustomer());
             orderRepository.saveOrder(newOrder);
+            logger.info("Order with id " + newOrder.getId() + " saved");
             return orderMapper.toOrderDTO(newOrder);
         } else throw new AuthorisationException("You are not allowed to reorder this specific order.");
     }
@@ -71,7 +72,7 @@ public class OrderService {
 
             if (reportedOrders.isEmpty())
                 throw new NoSuchElementException("You have no orders to report");
-
+            logger.info("Order report of  " + customerId + " generated");
             return new OrderReportDTO().setOrders(reportedOrders);
         }
         else
@@ -88,7 +89,7 @@ public class OrderService {
                 .filter(itemGroup -> itemGroup.getShippingDate().equals(LocalDate.now()))
                 .map(orderMapper::toItemGroupDTOWithAddress)
                 .collect(Collectors.toList());
-
+        logger.info("Daily shipping report generated for  " + authorisationId);
         return new ShippingReportDTO().setItemsToShip(outgoingItems);
     }
 }
