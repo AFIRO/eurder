@@ -45,9 +45,9 @@ public class ItemController {
         return itemService.getItemsByUrgency(authorisationId, urgency);
     }
 
-    @PutMapping(produces = "application/json", consumes = "application/json", params = {"authorisationId", "itemId"})
+    @PutMapping(produces = "application/json", consumes = "application/json", path = "/{itemId}", params = "authorisationId")
     @ResponseStatus(HttpStatus.OK)
-    public ItemWithStockDTO updateItem(@RequestParam(value = "authorisationId") String authorisationId,@RequestParam(value = "itemId") String itemId, @RequestBody UpdateItemDTO dto){
+    public ItemWithStockDTO updateItem(@RequestParam(value = "authorisationId") String authorisationId,@PathVariable("itemId") String itemId, @RequestBody UpdateItemDTO dto){
         logger.info("Item update called by user " + authorisationId);
         return itemService.updateItem(authorisationId,itemId,dto);
     }

@@ -39,11 +39,11 @@ public class Item {
     }
 
     private void setStockUrgencyIndicator() {
-        if (amountInStock < MEDIUM_STOCK_THRESHOLD)
+        if (this.amountInStock <= MEDIUM_STOCK_THRESHOLD)
             this.stockUrgencyIndicator = StockUrgencyIndicator.STOCK_LOW;
-        if (amountInStock > MEDIUM_STOCK_THRESHOLD && amountInStock < HIGH_STOCK_THRESHOLD)
+        if (this.amountInStock > MEDIUM_STOCK_THRESHOLD && amountInStock < HIGH_STOCK_THRESHOLD)
             this.stockUrgencyIndicator = StockUrgencyIndicator.STOCK_MEDIUM;
-        if (amountInStock >= HIGH_STOCK_THRESHOLD)
+        if (this.amountInStock >= HIGH_STOCK_THRESHOLD)
             this.stockUrgencyIndicator = StockUrgencyIndicator.STOCK_HIGH;
     }
 

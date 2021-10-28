@@ -51,7 +51,7 @@ public class OrderService {
         Order existingOrder = orderRepository.getSpecificOrder(orderId);
         Order newOrder = new Order(itemRepository);
 
-        if (existingOrder.getId().equals(customerId)) {
+        if (existingOrder.getCustomer().getId().equals(customerId)) {
             for (ItemGroup itemGroup : existingOrder.getOrderedItems())
                 newOrder.addItemToOrder(itemGroup.getItem().getId(), itemGroup.getAmountToOrder());
             newOrder.setCustomer(existingOrder.getCustomer());
