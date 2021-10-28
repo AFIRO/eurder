@@ -9,4 +9,9 @@ public class ShippingReportDTO {
         this.itemsToShip = itemsToShip;
         return this;
     }
+
+    public List<ItemGroupDTOWithAddress> getItemsToShip() {
+        return itemsToShip;
+    }
+
 }

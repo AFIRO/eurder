@@ -18,4 +18,12 @@ public class OrderReportDTO {
                 .reduce(0.0, Double::sum);
         this.totalCost = calculatedCost;
     }
+
+    public List<OrderDTO> getOrders() {
+        return orders;
+    }
+
+    public double getTotalCost() {
+        return totalCost;
+    }
 }

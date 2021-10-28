@@ -72,6 +72,7 @@ public class OrderService {
 
             if (reportedOrders.isEmpty())
                 throw new NoSuchElementException("You have no orders to report");
+
             logger.info("Order report of  " + customerId + " generated");
             return new OrderReportDTO().setOrders(reportedOrders);
         }

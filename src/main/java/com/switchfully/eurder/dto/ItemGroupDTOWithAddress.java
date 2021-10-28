@@ -33,4 +33,24 @@ public class ItemGroupDTOWithAddress {
         this.shippingDate = shippingDate;
         return this;
     }
+
+    public ItemDTO getItem() {
+        return item;
+    }
+
+    public int getAmountToOrder() {
+        return amountToOrder;
+    }
+
+    public double getCostForItemGroup() {
+        return costForItemGroup;
+    }
+
+    public String getAddressToShipTo() {
+        return addressToShipTo;
+    }
+
+    public LocalDate getShippingDate() {
+        return shippingDate;
+    }
 }
