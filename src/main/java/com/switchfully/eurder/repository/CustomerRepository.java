@@ -4,12 +4,12 @@ import com.switchfully.eurder.entities.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 @Repository
 public class CustomerRepository {
-    private final Map<String,User> savedUsersById;
+    private final Map<String, User> savedUsersById;
 
     public CustomerRepository() {
         savedUsersById = new ConcurrentHashMap();
@@ -27,6 +27,8 @@ public class CustomerRepository {
     }
 
     public User getSpecificUser(String customerId) {
-        return savedUsersById.get(customerId);
+        if (savedUsersById.containsKey(customerId))
+            return savedUsersById.get(customerId);
+        else throw new NoSuchElementException("The customer linked to this order does not exist");
     }
 }

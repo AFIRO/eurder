@@ -22,8 +22,14 @@ public class OrderController {
 
     @PostMapping(produces = "application/json", consumes = "application/json", params = "customerId")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDTO createItem(@RequestParam(value = "customerId") String customerId, @RequestBody CreateOrderDTO dto) {
+    public OrderDTO createOrder(@RequestParam(value = "customerId") String customerId, @RequestBody CreateOrderDTO dto) {
         return orderService.createNewOrder(customerId,dto);
+    }
+
+    @PostMapping(produces = "application/json", consumes = "application/json", params = {"customerId","orderId"})
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrderDTO reorderExistingOrder(@RequestParam(value = "customerId") String customerId,@RequestParam(value = "orderId", required = false)  String orderId) {
+        return orderService.reorderExistingOrder(customerId,orderId);
     }
 
 

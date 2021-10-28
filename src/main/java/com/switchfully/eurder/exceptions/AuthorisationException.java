@@ -8,5 +8,7 @@ public class AuthorisationException extends RuntimeException {
         super(DEFAULT_MESSAGE);
     }
 
-
+    public AuthorisationException(String message) {
+        super(message);
+    }
 }
