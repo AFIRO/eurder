@@ -1,14 +1,11 @@
 package com.switchfully.eurder.dto;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
 public class createUserDTO {
-    private   String firstName;
-    private  String lastName;
-    private  String email;
-    private  String address;
-    private  String phoneNumber;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String address;
+    private String phoneNumber;
 
 
     public createUserDTO setFirstName(String firstName) {

@@ -25,10 +25,11 @@ public class ValidationService {
     public boolean IsValidCreateUserDTO(createUserDTO dto) {
         return isValidStringInput(dto.getFirstName())
                 && isValidStringInput(dto.getLastName())
-                && isValidStringInput(dto.getAddress())
+                && isValidEmail(dto.getAddress())
                 && isValidStringInput(dto.getEmail())
                 && isValidStringInput(dto.getPhoneNumber());
     }
+
 
     public boolean isValidCreateItemDTO(CreateItemDTO dto) {
         return isValidStringInput(dto.getName())
@@ -75,6 +76,11 @@ public class ValidationService {
 
     private boolean isValidStringInput(String input) {
         return !(input == null || input.isEmpty() || input.isBlank());
+    }
+
+    private boolean isValidEmail(String address) {
+        return isValidStringInput(address)
+                && address.contains("@");
     }
 
     private boolean isValidDoubleInput(String number) {
